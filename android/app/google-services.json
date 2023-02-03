@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "554607456102",
+    "project_id": "parental-control-8ea9a",
+    "storage_bucket": "parental-control-8ea9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554607456102:android:37f614fa6f5fe38e15e2a7",
+        "android_client_info": {
+          "package_name": "com.inventor.parentalcontrol.parental_control"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554607456102-n4pao3468unmncq8a6rql98vg09bcpst.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABDe37T301kS7_Ts2e4u0FbLtQSUv_Dsk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554607456102-n4pao3468unmncq8a6rql98vg09bcpst.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
