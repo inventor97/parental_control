@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyABDe37T301kS7_Ts2e4u0FbLtQSUv_Dsk',
-    appId: '1:554607456102:android:37f614fa6f5fe38e15e2a7',
+    appId: '1:554607456102:android:f18ea377542b599a15e2a7',
     messagingSenderId: '554607456102',
     projectId: 'parental-control-8ea9a',
     storageBucket: 'parental-control-8ea9a.appspot.com',
@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBd5ZNA-BnKuOimwNsd2BjCxBXk-OFfGFU',
-    appId: '1:554607456102:ios:3c5299039f0349dc15e2a7',
+    appId: '1:554607456102:ios:43773fbfa3700f2415e2a7',
     messagingSenderId: '554607456102',
     projectId: 'parental-control-8ea9a',
     storageBucket: 'parental-control-8ea9a.appspot.com',
-    iosClientId: '554607456102-639juokiurt8dpgn4qjg4jsaut2iii32.apps.googleusercontent.com',
-    iosBundleId: 'com.inventor.parental-control.parentalControl',
+    iosClientId: '554607456102-6m3eudldpi1rgfjgj5ca4hc1i77tia6v.apps.googleusercontent.com',
+    iosBundleId: 'com.inventor.parentalcontrol',
   );
 }

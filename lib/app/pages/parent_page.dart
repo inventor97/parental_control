@@ -233,7 +233,7 @@ class _ParentPageState extends State<ParentPage>
                               mapScreenState = MapScreenState.Full;
                             });
                           },
-                          child: Consumer<Position>(builder: (_, position, __) {
+                          child: Consumer<Position?>(builder: (_, position, __) {
                             return (position != null)
                                 ? Geo(position, database)
                                 : Container(

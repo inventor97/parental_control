@@ -79,7 +79,7 @@ class _ChildDetailsPageState extends State<ChildDetailsPage> {
                 ),
               ],
             ),
-            body: _buildContentTemporary(context, child!),
+            body: _buildContentTemporary(context, child),
             floatingActionButton: FloatingActionButton(
                 child: Icon(Icons.more_vert),
                 onPressed: () {
@@ -92,7 +92,7 @@ class _ChildDetailsPageState extends State<ChildDetailsPage> {
         });
   }
 
-  Widget _buildContentTemporary(BuildContext context, ChildModel model) {
+  Widget _buildContentTemporary(BuildContext context, ChildModel? model) {
     if (model != null) {
       return SingleChildScrollView(
         physics: ScrollPhysics(),

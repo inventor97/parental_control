@@ -47,13 +47,14 @@ class _GeoState extends State<Geo> {
     super.initState();
   }
 
-  Future<Uint8List> getChildMarkerImage(Map<String, dynamic> data) async {
-    Uint8List bytes =
-        (await NetworkAssetBundle(Uri.parse(data['image'])).load(data['image']))
-            .buffer
-            .asUint8List();
+  Future<Uint8List?> getChildMarkerImage(Map<String, dynamic> data) async {
+    if (data['image'] != null) {
+      Uint8List bytes = (await NetworkAssetBundle(Uri.parse(data['image'])).load(data['image'])).buffer.asUint8List();
 
-    return bytes;
+      return bytes;
+    } else {
+      return null;
+    }
     // var imageAsset = CustomMarker(markerUrl: data['image']);
     // var byteData = await DefaultAssetBundle.of(context).load(imageAsset.markerUrl);
     // print(byteData);
@@ -62,10 +63,7 @@ class _GeoState extends State<Geo> {
 
   void getAllChildLocations() async {
     childLocationsList = [];
-    await FirebaseFirestore.instance
-        .collection(APIPath.children(_currentUser.uid))
-        .get()
-        .then((document) {
+    await FirebaseFirestore.instance.collection(APIPath.children(_currentUser.uid)).get().then((document) {
       if (document.docs.isNotEmpty) {
         for (var i = 0; i < document.docs.length; i++) {
           childLocationsList.add(document.docs[i].data);
@@ -94,13 +92,12 @@ class _GeoState extends State<Geo> {
         markerId: MarkerId(data['id']),
         //TODO:Implement child image as marker
         //icon: BitmapDescriptor.fromBytes(imageData),
-        icon:
-            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
         draggable: false,
         onTap: () {
           print('Marker Tapped');
         },
-        position: LatLng(data['position'].latitude, data['position'].longitude),
+        position: LatLng(data['position']?.latitude ?? 63.0, data['position']?.longitude ?? 44.4),
       ));
       print(allMarkers);
       return allMarkers;
@@ -113,17 +110,13 @@ class _GeoState extends State<Geo> {
       height: 250,
       child: Center(
         child: GoogleMap(
-          initialCameraPosition: CameraPosition(
-              target: LatLng(widget.initialPosition.latitude,
-                  widget.initialPosition.longitude),
-              zoom: 15),
+          initialCameraPosition: CameraPosition(target: LatLng(widget.initialPosition.latitude, widget.initialPosition.longitude), zoom: 15),
           mapType: MapType.normal,
           myLocationEnabled: true,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
             setState(() {
-              markers[MarkerId(allMarkers.first.markerId.value)] =
-                  allMarkers.first;
+              if (allMarkers.length > 0) markers[MarkerId(allMarkers.first.markerId.value)] = allMarkers.first;
             });
           },
           markers: Set<Marker>.of(allMarkers),
@@ -134,9 +127,6 @@ class _GeoState extends State<Geo> {
 
   Future<void> centerScreen(Position position) async {
     final controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
-            zoom: 16.0)));
+    await controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 16.0)));
   }
 }

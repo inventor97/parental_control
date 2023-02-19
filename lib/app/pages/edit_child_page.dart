@@ -74,7 +74,7 @@ class _EditChildPageState extends State<EditChildPage> {
     }
   }
 
-  Future<dynamic> _submit(XFile localFile) async {
+  Future<dynamic> _submit(XFile? localFile) async {
     id = uuid.v4().substring(0, 8).toUpperCase();
     if (localFile != null) {
       var fileExtension = path.extension(localFile.path);
@@ -119,7 +119,7 @@ class _EditChildPageState extends State<EditChildPage> {
             id: id!,
             name: _name!,
             email: _email!,
-            image: _imageURL!,
+            image: _imageURL,
           );
 
           await widget.database.setChild(child).whenComplete(() => {
@@ -147,7 +147,7 @@ class _EditChildPageState extends State<EditChildPage> {
         centerTitle: true,
         actions: [
           TextButton(
-            onPressed: () => _submit(_imageFile!),
+            onPressed: () => _submit(_imageFile),
             child: Text(
               'Save',
               style: TextStyle(fontSize: 18, color: Colors.white),
@@ -198,23 +198,23 @@ class _EditChildPageState extends State<EditChildPage> {
                     color: Colors.black.withOpacity(0.14),
                     child: Center(child: CircularProgressIndicator()),
                   ),
-            ButtonTheme(
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
-                ),
-                onPressed: () => _getLocalImage(),
-                child: Text(
-                  'add picture',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            )
+            // ButtonTheme(
+            //   child: ElevatedButton(
+            //     style: ButtonStyle(
+            //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //         RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(10.0),
+            //         ),
+            //       ),
+            //       backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+            //     ),
+            //     onPressed: () => _getLocalImage(),
+            //     child: Text(
+            //       'add picture',
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

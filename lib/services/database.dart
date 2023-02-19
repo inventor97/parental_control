@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:parental_control/models/child_model.dart';
 import 'package:parental_control/models/notification_model.dart';
@@ -27,7 +28,7 @@ abstract class Database {
 
   Stream<List<NotificationModel>> notificationStream();
 
-  Stream<ChildModel> childStream({@required String childId});
+  Stream<ChildModel> childStream({required String childId});
 
   Future<ChildModel> getUserCurrentChild(String name, String key, GeoPoint latLong);
 }
@@ -62,10 +63,10 @@ class FirestoreDatabase implements Database {
     String _email;
     String _image;
     await FirebaseFirestore.instance.collection('users').doc(user).collection('child').doc(key).get().then((doc) async {
-      if (doc.exists) {
-        _email = doc.data()!['email'];
+      if (doc.data() != null) {
+        _email = doc.data()?['email'];
         _currentChild = doc.data()!['name'];
-        _image = doc.data()!['image'];
+        _image = doc.data()?['image'];
         print('------------------------------------------------------');
         print(' User : $user \n');
         print(' ---------------- We found this as a match --------');

@@ -12,10 +12,9 @@ class AppUsageService implements AppService {
   @override
   Future<List<AppUsageInfo>> getAppUsageService() async {
     try {
-      var endDate = DateTime.now();
-      var startDate = endDate.subtract(Duration(hours: 1));
-      var infoList = await AppUsage.getAppUsage(startDate, endDate);
-      _info = infoList;
+      DateTime endDate = DateTime.now();
+      DateTime startDate = endDate.subtract(Duration(hours: 1));
+      _info = await AppUsage().getAppUsage(startDate, endDate);
     } on AppUsageException catch (exception) {
       print(exception);
     }

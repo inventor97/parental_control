@@ -20,16 +20,16 @@ class ChildModel {
   final String? image;
   final String id;
   final GeoPoint? position;
-  List<dynamic>? appsUsageModel = <AppUsageInfo>[];
+  List? appsUsageModel = <AppUsageInfo>[];
   String? token;
 
   factory ChildModel.fromMap(Map<dynamic, dynamic> data, String documentId) {
     final String name = data['name'];
-    final String image = data['image'];
+    final String? image = data['image'];
     final String email = data['email'];
-    final String token = data['token'];
-    final List<dynamic> apps = data['appsUsageModel'];
-    final GeoPoint position = data['position'];
+    final String? token = data['token'];
+    final List apps = data['appsUsageModel']  is List ? data['appsUsageModel']  : null;
+    final GeoPoint? position = data['position'];
 
     return ChildModel(id: documentId, name: name, image: image, email: email, token: token, position: position, appsUsageModel: apps ?? []);
     //appsUsageModel: apps);
