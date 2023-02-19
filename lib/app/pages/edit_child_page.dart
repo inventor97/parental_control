@@ -23,10 +23,9 @@ class EditChildPage extends StatefulWidget {
   /// The [context]  here is the context pf the JobsPage
   ///
   /// as the result we can get the provider of Database
-  static Future<void> show(BuildContext context,
-      {Database? database, ChildModel? model}) async {
+  static Future<void> show(BuildContext context, {Database? database, ChildModel? model}) async {
     await Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => EditChildPage(database: database!, model: model!),
+      builder: (context) => EditChildPage(database: database!, model: model ?? ChildModel(id: "", name: "", email: "")),
       fullscreenDialog: true,
     ));
   }
@@ -67,8 +66,7 @@ class _EditChildPageState extends State<EditChildPage> {
   }
 
   Future<void> _getLocalImage() async {
-    var imageFile = await _picker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50, maxWidth: 200);
+    var imageFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50, maxWidth: 200);
     if (imageFile != null) {
       setState(() {
         _imageFile = imageFile;
@@ -83,12 +81,11 @@ class _EditChildPageState extends State<EditChildPage> {
       print(fileExtension);
       final _id = widget.model.id ?? id;
       //var id = documentIdFromCurrentDate();
-      final firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child('Child/"${id}"/$id$fileExtension');
+      final firebaseStorageRef = FirebaseStorage.instance.ref().child('Child/"${id}"/$id$fileExtension');
 
       //TODO: Fix the onComplete Function
-      await firebaseStorageRef.putFile(File(localFile.path))
+      await firebaseStorageRef
+          .putFile(File(localFile.path))
           //.onComplete
           .catchError((onError) {
         print(onError);
@@ -116,10 +113,7 @@ class _EditChildPageState extends State<EditChildPage> {
           allNames.remove(widget.model.name);
         }
         if (allNames.contains(_name)) {
-          await showAlertDialog(context,
-              title: ' Name already used',
-              content: 'Please choose a different job name',
-              defaultActionText: 'OK');
+          await showAlertDialog(context, title: ' Name already used', content: 'Please choose a different job name', defaultActionText: 'OK');
         } else {
           final child = ChildModel(
             id: id!,
@@ -137,8 +131,7 @@ class _EditChildPageState extends State<EditChildPage> {
               });
         }
       } on FirebaseException catch (e) {
-        await showExceptionAlertDialog(context,
-            title: 'Operation failed', exception: e);
+        await showExceptionAlertDialog(context, title: 'Operation failed', exception: e);
       }
       //TODO: Submit data to Firestore
     }
@@ -213,8 +206,7 @@ class _EditChildPageState extends State<EditChildPage> {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).primaryColor),
+                  backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
                 ),
                 onPressed: () => _getLocalImage(),
                 child: Text(

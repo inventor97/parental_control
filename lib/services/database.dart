@@ -23,15 +23,13 @@ abstract class Database {
 
   Stream<List<ChildModel>> childrenStream();
 
-  Future<void> setNotification(
-      NotificationModel notification, ChildModel model);
+  Future<void> setNotification(NotificationModel notification, ChildModel model);
 
   Stream<List<NotificationModel>> notificationStream();
 
   Stream<ChildModel> childStream({@required String childId});
 
-  Future<ChildModel> getUserCurrentChild(
-      String name, String key, GeoPoint latLong);
+  Future<ChildModel> getUserCurrentChild(String name, String key, GeoPoint latLong);
 }
 
 // String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -54,8 +52,7 @@ class FirestoreDatabase implements Database {
   GeoLocatorService geo = GeoLocatorService();
 
   @override
-  Future<ChildModel> getUserCurrentChild(
-      String name, String key, GeoPoint latLong) async {
+  Future<ChildModel> getUserCurrentChild(String name, String key, GeoPoint latLong) async {
     final user = auth?.currentUser.uid;
     final token = await auth?.setToken();
     await apps.getAppUsageService();
@@ -64,13 +61,7 @@ class FirestoreDatabase implements Database {
     String _currentChild;
     String _email;
     String _image;
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user)
-        .collection('child')
-        .doc(key)
-        .get()
-        .then((doc) async {
+    await FirebaseFirestore.instance.collection('users').doc(user).collection('child').doc(key).get().then((doc) async {
       if (doc.exists) {
         _email = doc.data()!['email'];
         _currentChild = doc.data()!['name'];
@@ -84,14 +75,8 @@ class FirestoreDatabase implements Database {
         print('Email : $_email');
         print('Unique Key : $key');
 
-        _child = ChildModel(
-            id: doc.id,
-            name: _currentChild,
-            email: _email,
-            image: _image,
-            position: latLong,
-            appsUsageModel: apps.info,
-            token: token);
+        _child =
+            ChildModel(id: doc.id, name: _currentChild, email: _email, image: _image, position: latLong, appsUsageModel: apps.info, token: token);
 
         await setChild(_child!);
         return _child;
@@ -111,12 +96,10 @@ class FirestoreDatabase implements Database {
     var currentLocation = GeoPoint(point.latitude, point.longitude);
 
     print('The user is $user and the Child Id: ${model.id}');
-    print(
-        ' DEBUG: FROM DATABASE ===> Last location taken is longitude : ${point.longitude} , latitude :${point.latitude}');
+    print(' DEBUG: FROM DATABASE ===> Last location taken is longitude : ${point.longitude} , latitude :${point.latitude}');
     print(' DEBUG: APP USAGE ==> ${apps.info}');
 
-
-    if(model.id == 'D9FBAB88'){
+    if (model.id == 'D9FBAB88') {
       print('Choosing random Position for ${model.id}');
       // generates a new Random object
       var positions = <GeoPoint>[
@@ -138,7 +121,7 @@ class FirestoreDatabase implements Database {
         appsUsageModel: apps.info,
         image: model.image,
       );
-    }else {
+    } else {
       _child = ChildModel(
         id: model.id,
         name: model.name,
@@ -166,16 +149,12 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-  Future<void> setNotification(
-      NotificationModel notification, ChildModel child) async {
-    await _service.setNotificationFunction(
-        path: APIPath.notificationsStream(uid, child.id),
-        data: notification.toMap());
+  Future<void> setNotification(NotificationModel notification, ChildModel child) async {
+    await _service.setNotificationFunction(path: APIPath.notificationsStream(uid, child.id), data: notification.toMap());
   }
 
   Future<void> setTokenOnFirestore(Map<String, dynamic> token) async {
-    await _service.setNotificationFunction(
-        path: APIPath.deviceToken(), data: token);
+    await _service.setNotificationFunction(path: APIPath.deviceToken(), data: token);
   }
 
   @override
@@ -188,7 +167,6 @@ class FirestoreDatabase implements Database {
     await _service.deleteData(path: APIPath.notifications(uid, id));
   }
 
-
   @override
   Stream<List<ChildModel>> childrenStream() => _service.collectionStream(
         path: APIPath.children(uid),
@@ -196,8 +174,7 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-  Stream<ChildModel> childStream({String? childId}) =>
-      _service.documentStream(
+  Stream<ChildModel> childStream({String? childId}) => _service.documentStream(
         path: APIPath.child(uid, childId!),
         builder: (data, documentId) => ChildModel.fromMap(data, documentId),
       );
@@ -205,10 +182,8 @@ class FirestoreDatabase implements Database {
   @override
   Stream<List<NotificationModel>> notificationStream({String? childId}) {
     return _service.notificationStream(
-      path: APIPath.notificationsStream(uid, childId!),
-      builder: (data, documentId) =>
-          NotificationModel.fromMap(data, documentId),
+      path: APIPath.notificationsStream(uid, childId ?? ""),
+      builder: (data, documentId) => NotificationModel.fromMap(data, documentId),
     );
   }
-
 }
